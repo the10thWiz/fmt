@@ -12,3 +12,7 @@ The only two public functions, `diff` and `mask` take two functions, and return 
 The diff format will format every character that is the same with a green color, and different characters with a red color. The diff only prints the first object.
 
 The mask format will format every character of the first, colored green if the second is an (ascii) zero, or space, or red otherwise.
+
+## Notes:
+
+Unfortunately, it would appear that this crate requires the nightly toolchain, becuase it uses the `std::fmt` internals
