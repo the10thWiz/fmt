@@ -290,7 +290,7 @@ impl<T: Display> Display for Mask<T> {
             )],
             &cp_args,
         ));
-        write_diff(one, two, f)
+        write_mask(one, two, f)
     }
 }
 impl<T: Binary> Binary for Mask<T> {
@@ -312,7 +312,7 @@ impl<T: Binary> Binary for Mask<T> {
             )],
             &cp_args,
         ));
-        write_diff(one, two, f)
+        write_mask(one, two, f)
     }
 }
 impl<T: LowerHex> LowerHex for Mask<T> {
@@ -334,7 +334,7 @@ impl<T: LowerHex> LowerHex for Mask<T> {
             )],
             &cp_args,
         ));
-        write_diff(one, two, f)
+        write_mask(one, two, f)
     }
 }
 impl<T: UpperHex> UpperHex for Mask<T> {
@@ -356,7 +356,7 @@ impl<T: UpperHex> UpperHex for Mask<T> {
             )],
             &cp_args,
         ));
-        write_diff(one, two, f)
+        write_mask(one, two, f)
     }
 }
 impl<T: Octal> Octal for Mask<T> {
@@ -378,7 +378,7 @@ impl<T: Octal> Octal for Mask<T> {
             )],
             &cp_args,
         ));
-        write_diff(one, two, f)
+        write_mask(one, two, f)
     }
 }
 impl<T: UpperExp> UpperExp for Mask<T> {
@@ -400,7 +400,7 @@ impl<T: UpperExp> UpperExp for Mask<T> {
             )],
             &cp_args,
         ));
-        write_diff(one, two, f)
+        write_mask(one, two, f)
     }
 }
 impl<T: LowerExp> LowerExp for Mask<T> {
@@ -422,7 +422,7 @@ impl<T: LowerExp> LowerExp for Mask<T> {
             )],
             &cp_args,
         ));
-        write_diff(one, two, f)
+        write_mask(one, two, f)
     }
 }
 impl<T: Pointer> Pointer for Mask<T> {
@@ -444,7 +444,7 @@ impl<T: Pointer> Pointer for Mask<T> {
             )],
             &cp_args,
         ));
-        write_diff(one, two, f)
+        write_mask(one, two, f)
     }
 }
 
