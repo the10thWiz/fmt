@@ -8,9 +8,14 @@ extern crate alloc;
 use std::fmt::*;
 use termion::color;
 
-pub struct Diff<T>(T, T);
+pub struct Diff<'a, T>(&'a T, &'a T);
 
-pub fn diff<T>(a: T, b: T) -> Diff<T> {
+/**
+ * Creates a format object, to be formatted by any of the `format!` or `print!` macros
+ * 
+ * Requires that the objects format to the same length with the params supplied
+ */
+pub fn diff<'a, T>(a: &'a T, b: &'a T) -> Diff<'a, T> {
     Diff(a, b)
 }
 
@@ -64,13 +69,13 @@ fn write_diff(one: String, two: String, f:&mut Formatter) -> Result {
     write!(f, "{}", color::Fg(color::Reset))
 }
 
-impl<T: Display> Display for Diff<T> {
+impl<'a, T: Display> Display for Diff<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::Display::fmt,
             )],
             &cp_args,
@@ -78,7 +83,7 @@ impl<T: Display> Display for Diff<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::Display::fmt,
             )],
             &cp_args,
@@ -86,13 +91,13 @@ impl<T: Display> Display for Diff<T> {
         write_diff(one, two, f)
     }
 }
-impl<T: Binary> Binary for Diff<T> {
+impl<'a, T: Binary> Binary for Diff<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::Binary::fmt,
             )],
             &cp_args,
@@ -100,7 +105,7 @@ impl<T: Binary> Binary for Diff<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::Binary::fmt,
             )],
             &cp_args,
@@ -108,13 +113,13 @@ impl<T: Binary> Binary for Diff<T> {
         write_diff(one, two, f)
     }
 }
-impl<T: LowerHex> LowerHex for Diff<T> {
+impl<'a, T: LowerHex> LowerHex for Diff<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::LowerHex::fmt,
             )],
             &cp_args,
@@ -122,7 +127,7 @@ impl<T: LowerHex> LowerHex for Diff<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::LowerHex::fmt,
             )],
             &cp_args,
@@ -130,13 +135,13 @@ impl<T: LowerHex> LowerHex for Diff<T> {
         write_diff(one, two, f)
     }
 }
-impl<T: UpperHex> UpperHex for Diff<T> {
+impl<'a, T: UpperHex> UpperHex for Diff<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::UpperHex::fmt,
             )],
             &cp_args,
@@ -144,7 +149,7 @@ impl<T: UpperHex> UpperHex for Diff<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::UpperHex::fmt,
             )],
             &cp_args,
@@ -152,13 +157,13 @@ impl<T: UpperHex> UpperHex for Diff<T> {
         write_diff(one, two, f)
     }
 }
-impl<T: Octal> Octal for Diff<T> {
+impl<'a, T: Octal> Octal for Diff<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::Octal::fmt,
             )],
             &cp_args,
@@ -166,7 +171,7 @@ impl<T: Octal> Octal for Diff<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::Octal::fmt,
             )],
             &cp_args,
@@ -174,13 +179,13 @@ impl<T: Octal> Octal for Diff<T> {
         write_diff(one, two, f)
     }
 }
-impl<T: UpperExp> UpperExp for Diff<T> {
+impl<'a, T: UpperExp> UpperExp for Diff<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::UpperExp::fmt,
             )],
             &cp_args,
@@ -188,7 +193,7 @@ impl<T: UpperExp> UpperExp for Diff<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::UpperExp::fmt,
             )],
             &cp_args,
@@ -196,13 +201,13 @@ impl<T: UpperExp> UpperExp for Diff<T> {
         write_diff(one, two, f)
     }
 }
-impl<T: LowerExp> LowerExp for Diff<T> {
+impl<'a, T: LowerExp> LowerExp for Diff<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::LowerExp::fmt,
             )],
             &cp_args,
@@ -210,7 +215,7 @@ impl<T: LowerExp> LowerExp for Diff<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::LowerExp::fmt,
             )],
             &cp_args,
@@ -218,13 +223,13 @@ impl<T: LowerExp> LowerExp for Diff<T> {
         write_diff(one, two, f)
     }
 }
-impl<T: Pointer> Pointer for Diff<T> {
+impl<'a, T: Pointer> Pointer for Diff<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::Pointer::fmt,
             )],
             &cp_args,
@@ -232,7 +237,7 @@ impl<T: Pointer> Pointer for Diff<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::Pointer::fmt,
             )],
             &cp_args,
@@ -241,9 +246,14 @@ impl<T: Pointer> Pointer for Diff<T> {
     }
 }
 
-pub struct Mask<T>(T, T);
+pub struct Mask<'a, T>(&'a T, &'a T);
 
-pub fn mask<T>(a: T, b: T) -> Mask<T> {
+/**
+ * Creates a format object, to be formatted by any of the `format!` or `print!` macros
+ * 
+ * Requires that the objects format to the same length with the params supplied
+ */
+pub fn mask<'a, T>(a: &'a T, b: &'a T) -> Mask<'a, T> {
     Mask(a, b)
 }
 
@@ -255,7 +265,7 @@ fn write_mask(one: String, two: String, f:&mut Formatter) -> Result {
     let mut normal = true;
     write!(f, "{}", color::Fg(color::Green))?;
     for c in one.chars().zip(two.chars()) {
-        if c.1 == '0' {
+        if c.1 == '0' || c.1 == ' ' {
             if normal {
                 normal = false;
                 write!(f, "{}", color::Fg(color::Green))?;
@@ -271,13 +281,13 @@ fn write_mask(one: String, two: String, f:&mut Formatter) -> Result {
     write!(f, "{}", color::Fg(color::Reset))
 }
 
-impl<T: Display> Display for Mask<T> {
+impl<'a, T: Display> Display for Mask<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::Display::fmt,
             )],
             &cp_args,
@@ -285,7 +295,7 @@ impl<T: Display> Display for Mask<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::Display::fmt,
             )],
             &cp_args,
@@ -293,13 +303,13 @@ impl<T: Display> Display for Mask<T> {
         write_mask(one, two, f)
     }
 }
-impl<T: Binary> Binary for Mask<T> {
+impl<'a, T: Binary> Binary for Mask<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::Binary::fmt,
             )],
             &cp_args,
@@ -307,7 +317,7 @@ impl<T: Binary> Binary for Mask<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::Binary::fmt,
             )],
             &cp_args,
@@ -315,13 +325,13 @@ impl<T: Binary> Binary for Mask<T> {
         write_mask(one, two, f)
     }
 }
-impl<T: LowerHex> LowerHex for Mask<T> {
+impl<'a, T: LowerHex> LowerHex for Mask<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::LowerHex::fmt,
             )],
             &cp_args,
@@ -329,7 +339,7 @@ impl<T: LowerHex> LowerHex for Mask<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::LowerHex::fmt,
             )],
             &cp_args,
@@ -337,13 +347,13 @@ impl<T: LowerHex> LowerHex for Mask<T> {
         write_mask(one, two, f)
     }
 }
-impl<T: UpperHex> UpperHex for Mask<T> {
+impl<'a, T: UpperHex> UpperHex for Mask<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::UpperHex::fmt,
             )],
             &cp_args,
@@ -351,7 +361,7 @@ impl<T: UpperHex> UpperHex for Mask<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::UpperHex::fmt,
             )],
             &cp_args,
@@ -359,13 +369,13 @@ impl<T: UpperHex> UpperHex for Mask<T> {
         write_mask(one, two, f)
     }
 }
-impl<T: Octal> Octal for Mask<T> {
+impl<'a, T: Octal> Octal for Mask<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::Octal::fmt,
             )],
             &cp_args,
@@ -373,7 +383,7 @@ impl<T: Octal> Octal for Mask<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::Octal::fmt,
             )],
             &cp_args,
@@ -381,13 +391,13 @@ impl<T: Octal> Octal for Mask<T> {
         write_mask(one, two, f)
     }
 }
-impl<T: UpperExp> UpperExp for Mask<T> {
+impl<'a, T: UpperExp> UpperExp for Mask<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::UpperExp::fmt,
             )],
             &cp_args,
@@ -395,7 +405,7 @@ impl<T: UpperExp> UpperExp for Mask<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::UpperExp::fmt,
             )],
             &cp_args,
@@ -403,13 +413,13 @@ impl<T: UpperExp> UpperExp for Mask<T> {
         write_mask(one, two, f)
     }
 }
-impl<T: LowerExp> LowerExp for Mask<T> {
+impl<'a, T: LowerExp> LowerExp for Mask<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::LowerExp::fmt,
             )],
             &cp_args,
@@ -417,7 +427,7 @@ impl<T: LowerExp> LowerExp for Mask<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::LowerExp::fmt,
             )],
             &cp_args,
@@ -425,13 +435,13 @@ impl<T: LowerExp> LowerExp for Mask<T> {
         write_mask(one, two, f)
     }
 }
-impl<T: Pointer> Pointer for Mask<T> {
+impl<'a, T: Pointer> Pointer for Mask<'a, T> {
     fn fmt(&self, f: &mut Formatter) -> Result {
         let cp_args = clone_args(f);
         let one = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.0,
+                self.0,
                 ::core::fmt::Pointer::fmt,
             )],
             &cp_args,
@@ -439,7 +449,7 @@ impl<T: Pointer> Pointer for Mask<T> {
         let two = alloc::fmt::format(::core::fmt::Arguments::new_v1_formatted(
             &[""],
             &[::core::fmt::ArgumentV1::new(
-                &self.1,
+                self.1,
                 ::core::fmt::Pointer::fmt,
             )],
             &cp_args,
